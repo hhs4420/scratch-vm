@@ -252,11 +252,8 @@ class Jikko {
         return this.send(BLEUUID.set_service, BLEUUID.set_oled, send_data);
     }
 
-    //0: digital 1: analog 2:dht 3:ultrasonic 4:gyro
-    //  5:touch 6:button 7:button-pu (8:Light)
-    setDigital(cmd, port) {
+    setDigital(port) {
         var send_data = [];
-        send_data.push(cmd);
         send_data.push(port);
         return this.send(
             BLEUUID.set_service,
@@ -264,9 +261,8 @@ class Jikko {
             send_data
         );
     }
-    setAnalog(cmd, port) {
+    setAnalog(port) {
         var send_data = [];
-        send_data.push(cmd);
         send_data.push(port);
         //    console.log("SETDANALOG");
         return this.send(
@@ -275,16 +271,13 @@ class Jikko {
             send_data
         );
     }
-    setDHT(cmd, port) {
+    setDHT(port) {
         var send_data = [];
-        send_data.push(cmd);
         send_data.push(port);
-        //     console.log("SETDHT");
         return this.send(BLEUUID.set_service, BLEUUID.set_dht_port, send_data);
     }
-    setUltrasonic(cmd, port1, port2) {
+    setUltrasonic(port1, port2) {
         var send_data = [];
-        send_data.push(cmd);
         send_data.push(port1);
         send_data.push(port2);
         return this.send(
@@ -293,28 +286,15 @@ class Jikko {
             send_data
         );
     }
-    setLight(cmd, port) {
-        var send_data = [];
-        send_data.push(cmd);
-        send_data.push(port);
-        return this.send(
-            BLEUUID.set_service,
-            BLEUUID.set_analog_port,
-            send_data
-        );
-    }
 
-    setGyro(cmd) {
-        var send_data = [];
-        send_data.push(cmd);
+    setGyro() {
         return this.send(BLEUUID.set_service, BLEUUID.set_gyro_port, send_data);
     }
 
-    setTouch(cmd, port) {
+    setTouch(port) {
         var send_data = [];
         send_data.push(cmd);
         send_data.push(port);
-        //console.log(send_data);
         return this.send(
             BLEUUID.set_service,
             BLEUUID.set_touch_port,
@@ -322,9 +302,8 @@ class Jikko {
         );
     }
 
-    setButton(cmd, port) {
+    setButton(port) {
         var send_data = [];
-        send_data.push(cmd);
         send_data.push(port);
         return this.send(
             BLEUUID.set_service,
@@ -333,9 +312,8 @@ class Jikko {
         );
     }
 
-    setButtonPu(cmd, port) {
+    setButtonPu(port) {
         var send_data = [];
-        send_data.push(cmd);
         send_data.push(port);
         return this.send(
             BLEUUID.set_service,
@@ -1232,27 +1210,27 @@ class Scratch3JikkoBlocks {
     }
 
     getDigitalValue(args) {
-        this._peripheral.setDigital(0, args.DIGITAL_PIN);
+        this._peripheral.setDigital(args.DIGITAL_PIN);
 
         return this._peripheral._digital;
     }
 
     getAnalogValue(args) {
-        this._peripheral.setAnalog(1, args.ANALOG_SELECT);
+        this._peripheral.setAnalog(args.ANALOG_SELECT);
         // console.log("ANALOG");
 
         return this._peripheral._analog;
     }
 
     getLightValue(args) {
-        this._peripheral.setAnalog(1, args.ANALOG_SELECT);
+        this._peripheral.setAnalog(args.ANALOG_SELECT);
         // console.log("ANALOG");
 
         return this._peripheral._analog;
     }
 
     getDHTvalue(args) {
-        this._peripheral.setDHT(2, args.DIGITAL_PIN);
+        this._peripheral.setDHT(args.DIGITAL_PIN);
         //    console.log("DHT");
         if (args.DHT_SELECT == 0) {
             return this._peripheral._dht[0];
@@ -1261,11 +1239,11 @@ class Scratch3JikkoBlocks {
         }
     }
     getUltrasonicValue(args) {
-        this._peripheral.setUltrasonic(3, args.TRIG, args.ECHO);
+        this._peripheral.setUltrasonic(args.TRIG, args.ECHO);
         return this._peripheral._ultrasonic;
     }
     getGyroValue(args) {
-        this._peripheral.setGyro(4);
+        this._peripheral.setGyro();
         if (args.GYRO_SELECT == 0) {
             return this._peripheral._gyro[0];
         } else if (args.GYRO_SELECT == 1) {
@@ -1276,20 +1254,20 @@ class Scratch3JikkoBlocks {
     }
 
     getTouchValue(args) {
-        this._peripheral.setTouch(5, args.TOUCH_SELECH);
+        this._peripheral.setTouch(args.TOUCH_SELECH);
         var touch_value = this._peripheral._touch;
         console.log(touch_value);
         return touch_value > 30 ? false : true;
     }
 
     isButtonPressed(args) {
-        this._peripheral.setButton(6, args.DIGITAL_PIN);
+        this._peripheral.setButton(args.DIGITAL_PIN);
 
         return this._peripheral._button;
     }
 
     isButtonPressedpm(args) {
-        this._peripheral.setButtonPu(7, args.DIGITAL_PIN);
+        this._peripheral.setButtonPu(args.DIGITAL_PIN);
         return this._peripheral._buttnpu;
     }
 
